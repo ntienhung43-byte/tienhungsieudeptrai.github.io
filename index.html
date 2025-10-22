@@ -1,36 +1,454 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trang web của Nguyễn Tiến Hưng</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio — Giới thiệu</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      color: white;
-      text-align: center;
-      padding-top: 100px;
+    :root{
+      --bg:#0f1724; /* deep night */
+      --card:#0b1220;
+      --accent1:#7c3aed; /* purple */
+      --accent2:#06b6d4; /* cyan */
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.6);
+      --success:#22c55e;
+      --danger:#ef4444;
+      --glass-border: rgba(255,255,255,0.06);
+      --card-glow: 0 8px 30px rgba(124,58,237,0.12);
     }
-    h1 {
-      font-size: 3em;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(124,58,237,0.12), transparent),
+                  radial-gradient(900px 600px at 90% 90%, rgba(6,182,212,0.06), transparent),
+                  var(--bg);
+      color:#e6edf3;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    p {
-      font-size: 1.2em;
+
+    /* Layout */
+    .wrap{
+      width:1100px;
+      max-width:100%;
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap:28px;
+      align-items:start;
     }
-    .card {
-      background: rgba(255,255,255,0.2);
-      padding: 20px;
-      border-radius: 20px;
-      display: inline-block;
+
+    /* Left profile card */
+    .profile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:22px;
+      box-shadow:var(--card-glow);
+      position:relative;
+      overflow:hidden;
     }
+
+    .avatar{
+      width:100%;
+      height:220px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;font-size:28px;color:white;
+      letter-spacing:1px;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+      transform-origin:center;
+      transition:transform .8s cubic-bezier(.2,.9,.3,1);
+    }
+    .avatar:hover{transform:scale(1.03) rotate(-1deg)}
+
+    .meta{margin-top:14px}
+    .name{font-size:20px;font-weight:700}
+    .role{color:var(--muted);margin-top:6px;font-size:13px}
+    .bio{margin-top:12px;color:rgba(230,237,243,0.9);line-height:1.45;font-size:14px}
+
+    .links{display:flex;gap:10px;margin-top:16px}
+    .btn{
+      background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);
+      padding:10px 14px;border-radius:12px;font-weight:600;font-size:14px;
+      cursor:pointer;display:inline-flex;align-items:center;gap:10px;transition:transform .18s ease,box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(2,6,23,0.6)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;border:0;}
+    .btn.ghost{background:transparent}
+
+    .stats{display:flex;gap:12px;margin-top:18px}
+    .stat{background:var(--glass);border-radius:10px;padding:10px 12px;min-width:0;flex:1}
+    .stat .n{font-weight:700}
+    .stat .t{color:var(--muted);font-size:12px}
+
+    /* Right content */
+    .content{
+      display:flex;flex-direction:column;gap:18px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;padding:18px;border:1px solid var(--glass-border);
+      box-shadow: 0 10px 30px rgba(2,6,23,0.45);
+    }
+
+    .controls{display:flex;gap:12px;align-items:center}
+
+    /* Pomodoro */
+    .pomodoro{display:flex;gap:20px;align-items:center}
+    .circle-wrap{width:220px;height:220px;display:grid;place-items:center;position:relative}
+    .progress-ring{transform:rotate(-90deg)}
+    .time-display{position:absolute;display:flex;flex-direction:column;align-items:center}
+    .time-display .minutes{font-size:36px;font-weight:800}
+    .time-display .label{font-size:12px;color:var(--muted);margin-top:6px}
+
+    .pom-options{display:flex;flex-direction:column;gap:8px}
+    .preset{display:flex;gap:8px}
+    .preset button{flex:1;padding:8px;border-radius:10px;border:1px solid var(--glass-border);background:transparent;color:var(--muted);cursor:pointer}
+    .preset button.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;border:0}
+
+    .timer-actions{display:flex;gap:10px;margin-top:12px}
+    .small{padding:8px 10px;font-size:13px}
+
+    /* Game */
+    .game-area{display:flex;gap:18px;align-items:stretch}
+    .game-canvas{background:linear-gradient(180deg,#071028, #071826);border-radius:12px;flex:1;padding:10px;display:grid;place-items:center}
+    canvas{border-radius:10px;display:block}
+    .game-info{width:240px;display:flex;flex-direction:column;gap:10px}
+
+    /* footer */
+    .footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
+
+    /* Fancy micro-interactions */
+    .glow-dot{position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(50px);opacity:0.14;pointer-events:none}
+    .glow-dot.p1{right:-30px;top:-30px;background:linear-gradient(135deg,var(--accent1),transparent)}
+    .glow-dot.p2{left:-30px;bottom:-30px;background:linear-gradient(135deg,var(--accent2),transparent)}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .wrap{grid-template-columns:1fr;}
+      .avatar{height:180px}
+      .game-info{width:100%}
+    }
+
+    /* tiny helper */
+    .muted{color:var(--muted)}
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Xin chào Nguyễn Việt Hà nha</h1>
-    <p>Đây là trang web đầu tiên mà tôi làm đó nha=)))</p>
-    <p>chill thật đấu</p>
+  <div class="wrap">
+    <aside class="profile card" aria-label="Thông tin cá nhân">
+      <div class="avatar" id="avatar">TÊN CỦA BẠN</div>
+      <div class="meta">
+        <div class="name" id="displayName">Nguyễn Tiến Hưng</div>
+        <div class="role">Student • Web dev enthusiast • Pomodoro fan</div>
+        <div class="bio" id="bio">Xin chào! Mình là một người thích học, tạo web đẹp, và làm game nhỏ. Mở thử các nút bên dưới để chơi game và sử dụng đồng hồ Pomodoro tích hợp.</div>
+
+        <div class="links">
+          <button class="btn primary" id="btnStartGame">Chơi game</button>
+          <button class="btn" id="btnOpenPomodoro">Pomodoro</button>
+          <button class="btn ghost" id="btnDownload">Tải HTML</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="n">A2</div><div class="t">Trình độ Anh</div></div>
+          <div class="stat"><div class="n">10+</div><div class="t">Dự án</div></div>
+          <div class="stat"><div class="n">🍃</div><div class="t">Thói quen tốt</div></div>
+        </div>
+      </div>
+      <div class="glow-dot p1"></div>
+      <div class="glow-dot p2"></div>
+    </aside>
+
+    <main class="content">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 style="margin:0">Bảng điều khiển</h3>
+          <div class="controls">
+            <button class="btn small" id="themeToggle">Đổi tên / ảnh</button>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:10px">Giao diện này là file HTML một trang, bạn có thể chỉnh sửa nội dung trong thẻ &lt;div id=\"displayName\"&gt; và &lt;div id=\"bio\"&gt; để cá nhân hoá. Dưới đây là Pomodoro & game tích hợp.</p>
+      </section>
+
+      <section class="card pom-card" id="pomCard">
+        <h4 style="margin:0 0 12px 0">Pomodoro — Tập trung tối đa</h4>
+        <div class="pomodoro">
+          <div class="circle-wrap">
+            <svg class="progress-ring" width="220" height="220" viewBox="0 0 120 120" aria-hidden="true">
+              <defs></defs>
+              <circle cx="60" cy="60" r="52" stroke="rgba(255,255,255,0.06)" stroke-width="12" fill="transparent"></circle>
+              <circle id="progressCircle" cx="60" cy="60" r="52" stroke-width="12" stroke-linecap="round" fill="transparent" stroke="url(#grad)" ></circle>
+              <defs>
+                <linearGradient id="grad" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="time-display">
+              <div class="minutes" id="timeDisplay">25:00</div>
+              <div class="label" id="pomLabel">Pomodoro</div>
+            </div>
+          </div>
+
+          <div class="pom-options">
+            <div class="preset">
+              <button data-min="25" class="active">Pomodoro 25</button>
+              <button data-min="50">Long 50</button>
+              <button data-min="5">Short 5</button>
+            </div>
+
+            <div style="display:flex;gap:8px">
+              <button class="btn small" id="startBtn">Bắt đầu</button>
+              <button class="btn small" id="pauseBtn">Tạm dừng</button>
+              <button class="btn small" id="resetBtn">Đặt lại</button>
+            </div>
+
+            <div class="timer-actions">
+              <label class="muted">Âm thanh</label>
+              <input type="checkbox" id="soundToggle" checked>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="padding-bottom:16px">
+        <h4 style="margin:0 0 12px 0">Game nhỏ — Dodge</h4>
+        <div class="game-area">
+          <div class="game-canvas">
+            <canvas id="gameCanvas" width="720" height="360" aria-label="Game canvas"></canvas>
+          </div>
+          <div class="game-info">
+            <div style="font-weight:700">Điều khiển</div>
+            <div class="muted">Phím mũi tên: Di chuyển</div>
+            <div class="muted">Space: Tạm dừng / tiếp tục</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn" id="btnNewGame">Bắt đầu trò chơi</button>
+              <button class="btn" id="btnPauseGame">Tạm dừng</button>
+            </div>
+            <div style="margin-top:auto">
+              <div class="muted">Điểm:</div>
+              <div style="font-size:20px;font-weight:800" id="score">0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="card footer">
+        <div>Made with ❤️ — chỉnh sửa ngay trong file HTML</div>
+        <div class="muted">Phiên bản: 1.0</div>
+      </footer>
+    </main>
   </div>
+
+  <script>
+    // ---------- Simple personalization ----------
+    const displayName = document.getElementById('displayName');
+    const avatar = document.getElementById('avatar');
+    const bio = document.getElementById('bio');
+
+    document.getElementById('themeToggle').addEventListener('click', ()=>{
+      const newName = prompt('Nhập tên hiển thị của bạn:', displayName.textContent);
+      if(newName) displayName.textContent = newName;
+      const newBio = prompt('Nhập mô tả ngắn (bio):', bio.textContent);
+      if(newBio) bio.textContent = newBio;
+      const initials = displayName.textContent.split(' ').map(s=>s[0]||'').slice(0,2).join('').toUpperCase();
+      avatar.textContent = initials || 'YOU';
+    });
+
+    // Download current HTML
+    document.getElementById('btnDownload').addEventListener('click', ()=>{
+      const html = '<!doctype html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([html], {type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'portfolio.html'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // ---------- Pomodoro logic & animated ring ----------
+    const progress = document.getElementById('progressCircle');
+    const timeDisplay = document.getElementById('timeDisplay');
+    const startBtn = document.getElementById('startBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const presets = document.querySelectorAll('.preset button');
+    const label = document.getElementById('pomLabel');
+    const soundToggle = document.getElementById('soundToggle');
+
+    let totalSeconds = 25*60;
+    let remaining = totalSeconds;
+    let running = false;
+    let timerInterval = null;
+    const radius = 52;
+    const circumference = 2*Math.PI*radius;
+    progress.setAttribute('r', radius);
+    progress.setAttribute('cx', 60);
+    progress.setAttribute('cy', 60);
+    progress.style.strokeDasharray = circumference;
+    progress.style.strokeDashoffset = circumference;
+    progress.style.transition = 'stroke-dashoffset 0.6s linear';
+
+    function updateRing(){
+      const pct = remaining/totalSeconds;
+      const offset = circumference * (1 - pct);
+      progress.style.strokeDashoffset = offset;
+    }
+    function formatTime(s){
+      const mm = String(Math.floor(s/60)).padStart(2,'0');
+      const ss = String(s%60).padStart(2,'0');
+      return mm+':'+ss;
+    }
+    function setPreset(min){
+      totalSeconds = min*60; remaining = totalSeconds; updateDisplay();
+      presets.forEach(p=>p.classList.toggle('active', p.dataset.min==min));
+      label.textContent = (min>=25)?'Pomodoro':'Break';
+    }
+    function updateDisplay(){
+      timeDisplay.textContent = formatTime(remaining);
+      updateRing();
+    }
+    presets.forEach(p=>p.addEventListener('click', ()=>setPreset(p.dataset.min)));
+    setPreset(25);
+
+    startBtn.addEventListener('click', ()=>{
+      if(running) return;
+      running = true;
+      timerInterval = setInterval(()=>{
+        if(remaining>0){ remaining--; updateDisplay(); }
+        else{ clearInterval(timerInterval); running=false; onFinish(); }
+      },1000);
+    });
+    pauseBtn.addEventListener('click', ()=>{
+      if(timerInterval){ clearInterval(timerInterval); timerInterval=null; running=false; }
+    });
+    resetBtn.addEventListener('click', ()=>{ if(timerInterval) clearInterval(timerInterval); running=false; remaining=totalSeconds; updateDisplay(); });
+
+    function onFinish(){
+      updateRing();
+      if(soundToggle.checked){
+        const audio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=');
+        audio.play().catch(()=>{});
+      }
+      // subtle visual
+      const old = document.body.style.filter;
+      document.body.animate([{filter:'brightness(1)'},{filter:'brightness(1.06)'}],{duration:600,iterations:2,direction:'alternate'});
+    }
+
+    // ---------- Simple canvas game: Dodge blocks ----------
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width; const H = canvas.height;
+
+    let player = {x:60,y:H/2-16,w:22,h:22,vy:0,speed:3};
+    let obstacles = [];
+    let obstacleTimer=0;
+    let gameRunning=false;
+    let score=0;
+    let gameLoopId=null;
+    let paused=false;
+
+    function resetGame(){
+      player.y = H/2-16; player.vy=0;
+      obstacles=[]; obstacleTimer=0; score=0; updateScore();
+    }
+    function spawnObstacle(){
+      const h = 20 + Math.random()*80;
+      const y = Math.random()*(H-h-20)+10;
+      obstacles.push({x:W+20,y,y0:y,w:20,h,spd:2 + Math.random()*2});
+    }
+    function updateScore(){ document.getElementById('score').textContent = score; }
+
+    function step(){
+      if(!gameRunning || paused) return;
+      ctx.clearRect(0,0,W,H);
+      // background grid subtle
+      ctx.fillStyle='rgba(255,255,255,0.02)';
+      for(let i=0;i<20;i++){
+        ctx.fillRect(i*60, H-6 - (i%2?6:0), 40, 1);
+      }
+      // player physics
+      player.y += player.vy;
+      if(player.y<8) player.y=8;
+      if(player.y+player.h>H-8) player.y=H-player.h-8;
+
+      // obstacles
+      obstacleTimer++;
+      if(obstacleTimer>60){ spawnObstacle(); obstacleTimer=0; }
+      obstacles.forEach(o=>{ o.x -= o.spd; });
+      obstacles = obstacles.filter(o=>o.x+o.w> -40);
+
+      // collisions
+      for(const o of obstacles){
+        if(player.x < o.x+o.w && player.x+player.w > o.x && player.y < o.y+o.h && player.y+player.h > o.y){
+          endGame(); return;
+        }
+      }
+
+      // draw player
+      ctx.save();
+      const g = ctx.createLinearGradient(player.x,player.y,player.x+player.w,player.y+player.h);
+      g.addColorStop(0,'#7c3aed'); g.addColorStop(1,'#06b6d4');
+      ctx.fillStyle = g; ctx.fillRect(player.x,player.y,player.w,player.h);
+      ctx.restore();
+
+      // draw obstacles
+      ctx.fillStyle='rgba(255,255,255,0.08)';
+      obstacles.forEach(o=>{
+        ctx.fillRect(o.x,o.y,o.w,o.h);
+      });
+
+      // score increases by time
+      score += 0.02; updateScore();
+    }
+
+    function loop(){ step(); gameLoopId = requestAnimationFrame(loop); }
+
+    function startGame(){ if(gameRunning) return; resetGame(); gameRunning=true; paused=false; loop(); }
+    function endGame(){ gameRunning=false; cancelAnimationFrame(gameLoopId); alert('Game over! Điểm: ' + Math.floor(score)); }
+
+    // controls
+    window.addEventListener('keydown', (e)=>{
+      if(e.code==='ArrowUp'){ player.vy = -player.speed; }
+      if(e.code==='ArrowDown'){ player.vy = player.speed; }
+      if(e.code==='Space'){ paused = !paused; }
+    });
+    window.addEventListener('keyup',(e)=>{ if(e.code==='ArrowUp' || e.code==='ArrowDown'){ player.vy = 0; } });
+
+    document.getElementById('btnNewGame').addEventListener('click', ()=> startGame());
+    document.getElementById('btnPauseGame').addEventListener('click', ()=> paused = !paused);
+    document.getElementById('btnStartGame').addEventListener('click', ()=> startGame());
+    document.getElementById('btnOpenPomodoro').addEventListener('click', ()=>{
+      window.scrollTo({top:0,behavior:'smooth'});
+      // highlight
+      const el = document.getElementById('pomCard');
+      el.animate([{boxShadow:'0 0 0px rgba(0,0,0,0)'},{boxShadow:'0 20px 60px rgba(124,58,237,0.12)'}],{duration:700,iterations:1});
+    });
+
+    // start a subtle animation loop for visuals
+    (function animateVisuals(){
+      requestAnimationFrame(animateVisuals);
+    })();
+
+    // small accessibility: stop game when tab hidden
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.hidden){ paused=true; }
+    });
+
+    // Initialize
+    updateDisplay(); updateScore();
+
+  </script>
 </body>
 </html>
